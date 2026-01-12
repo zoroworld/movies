@@ -1,0 +1,45 @@
+{% extends 'systemadmin/layout/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+
+<section class="dashboard-container">
+
+    <h1 class="mb-5">🎬 Movie Theatre Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Movies</h3>
+            <div class="value">42</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Shows Today</h3>
+            <div class="value">18</div>
+        </div>
+
+        <div class="card">
+            <h3>Tickets Sold</h3>
+            <div class="value">842</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <div class="value">₹ 1,45,200</div>
+        </div>
+    </div>
+
+    <!-- Chart Box -->
+    <div class="chart-box">
+        <h2 style="text-align:center;">📊 Ticket Sales (Last 7 Days)</h2>
+        <canvas id="myChart"></canvas>
+    </div>
+
+</section>
+
+
+{% endblock %}

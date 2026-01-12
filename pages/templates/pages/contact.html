@@ -1,0 +1,106 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Contact Us | Movies Booking{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center text-white">
+        <h2>Contact Us</h2>
+        <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Contact</span>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Contact Widget Section Begin -->
+<section class="contact-widget spad">
+    <div class="container">
+        <div class="row">
+
+            <!-- Address -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="contact__widget__item">
+                    <div class="contact__widget__item__icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <div class="contact__widget__item__text">
+                        <h4>Address</h4>
+                        <p>Bhubaneswar, Odisha, India - 751001</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="contact__widget__item">
+                    <div class="contact__widget__item__icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="contact__widget__item__text">
+                        <h4>Hotline</h4>
+                        <p>+91 90909 90909
+                           <br>+91 79845 12345</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="contact__widget__item">
+                    <div class="contact__widget__item__icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <div class="contact__widget__item__text">
+                        <h4>Email</h4>
+                        <p>support@moviesbooking.in</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Contact Widget Section End -->
+
+<!-- Map + Form Section -->
+<section class="contact spad">
+    <div class="container">
+        <div class="row">
+
+            <!-- Map -->
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.403285809743!2d85.81991611489162!3d20.296058886411695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909cf7f79b77b%3A0x4cf94cd549a3a89b!2sBhubaneswar%2C%20Odisha!5e0!3m2!1sen!2sin!4v1600000000000"
+                        height="450"
+                        style="border:0; width:100%;"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-lg-6 col-md-6">
+                <div class="contact__form">
+                    <h3>Get in Touch</h3>
+                    <form action="#">
+                        <input type="text" placeholder="Your Name">
+                        <input type="email" placeholder="Your Email">
+                        <input type="text" placeholder="Subject">
+                        <textarea placeholder="Message"></textarea>
+                        <button type="submit" class="site-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

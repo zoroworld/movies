@@ -1,0 +1,82 @@
+{% extends 'systemadmin/layout/base.html' %}
+
+{% block title %}Create Theatre | Movies Management{% endblock %}
+
+{% block content %}
+<div class="create-container create-theatre-container">
+    <h1>Create Theatre</h1>
+
+    <form method="POST" class="p-3 border rounded bg-light shadow-sm">
+        {% csrf_token %}
+        <!-- Payment Status -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Theater</label>
+            <input type="text" name="name" id="name" class="form-control" placeholder="Enter theater name" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descriptions</label>
+            <textarea  name="description" id="description" class="form-control" placeholder="Enter theater name" required> </textarea>
+        </div>
+        <!-- Select Movie -->
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="mb-3">
+                    <label for="movie" class="form-label">Select Movie(s)</label>
+                    <select name="movie" id="movie" class="form-select all-movie-data" multiple required>
+                        {% for m in movies %}
+                        <option value="{{ m.id }}" id="movie{{ m.id }}">{{ m.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple movies.</small>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <!-- Select Seats -->
+                <div class="mb-3">
+                    <label for="seats" class="form-label">Select Seat(s)</label>
+                    <input type="number" name="seats" id="seats" class="form-control"
+                           placeholder="No of seats" required>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Select Locations -->
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <select name="country" id="country" class="form-select">
+                <option value="">Select Country</option>
+                {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <select name="state" id="state" class="form-select">
+                <option value="">Select State</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <select name="city" id="city" class="form-select">
+                <option value="">Select City</option>
+            </select>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Save Booking</button>
+    </form>
+</div>
+<script>
+    const ajaxUrls = {
+        loadStates: "{% url 'ajax_load_states' %}",
+        loadCities: "{% url 'ajax_load_cities' %}"
+    };
+</script>
+
+
+{% endblock %}

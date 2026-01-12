@@ -1,0 +1,94 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}About | Movies Booking{% endblock %}
+{% load static %}
+{% block content %}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>About us</h2>
+                    <div class="breadcrumb__links">
+                        <a href="#">Home</a>
+                        <span>About</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- About Section Begin -->
+<section class="about spad">
+    <div class="container">
+        <div class="row">
+            <!-- About Images -->
+            <div class="col-lg-6">
+                <div class="about__pic">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="about__pic__item about__pic__item--large set-bg"
+                                 data-setbg="{% static 'img/about/cinema-1.jpeg' %}"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="about__pic__item set-bg"
+                                         data-setbg="{% static 'img/about/cinema-2.jpeg' %}"></div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="about__pic__item set-bg"
+                                         data-setbg="{% static 'img/about/cinema-3.jpeg' %}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Text -->
+            <div class="col-lg-6">
+                <div class="about__text">
+                    <div class="section-title">
+                        <span>About MovieVerse</span>
+                        <h2>Who We Are</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="services__item">
+                                <div class="services__item__icon mb-2">
+                                    <img src="{% static 'img/icons/si-3.png' %}" alt="">
+                                </div>
+                                <h4 class="text-white mb-1">Easy Ticket Booking</h4>
+                                <p>Book your favorite movie tickets in just a few clicks — fast, secure, and
+                                    hassle-free.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="services__item">
+                                <div class="services__item__icon mb-2">
+                                    <img src="{% static 'img/icons/si-4.png' %}" alt="">
+                                </div>
+                                <h4 class="text-white mb-1">Discover New Movies</h4>
+                                <p>Explore trending films, upcoming releases, and personalized movie
+                                    recommendations.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about__text__desc">
+                        <p>Founded in 2024, <b>MovieVerse</b> is your one-stop destination for booking movie tickets,
+                            discovering cinemas, and staying updated with the latest releases. Our mission is to bring
+                            movie lovers closer to their favorite shows — anytime, anywhere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section End -->
+{% endblock %}

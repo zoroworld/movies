@@ -1,0 +1,143 @@
+{% extends 'systemadmin/layout/base.html' %}
+{% load static %}
+
+{% block title %}Movies | Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+    .movie-poster {
+        width: 75px;
+        height: 105px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+</style>
+
+<div class="py-4">
+
+    <!-- HEADER + ACTIONS -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 fw-semibold"><i class="bi bi-film"></i> All Movies</h4>
+            <div>
+                <a href="{% url 'dashboard-movies-create' %}" class="btn btn-success btn-sm">
+                    + Add Movie
+                </a>
+            </div>
+        </div>
+
+        <!-- FILTER SECTION -->
+        <div class="card-body bg-light border-bottom">
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label class="form-label">Search Title</label>
+                    <input type="text" id="movieSearch" class="form-control" placeholder="Search movie...">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Genre</label>
+                    <select id="genreFilter" class="form-select">
+                        <option value="">All Genres</option>
+                        {% for value, label in genres %}
+                        <option value="{{ label }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Release Date</label>
+                    <input type="date" id="dateFilter" class="form-control">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle" id="moviesTable">
+                <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Poster</th>
+                    <th>Genre</th>
+                    <th>Release Date</th>
+                    <th>Seats</th>
+                    <th>Description</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for movie in movies %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="title">{{ movie.title }}</td>
+
+                    <td>
+                        <img src="{{ movie.poster.url }}" class="movie-poster">
+                    </td>
+
+                    <td class="genre">{{ movie.genre }}</td>
+
+                    <td class="date">{{ movie.release_date|default:"" }}</td>
+
+                    <td>{{ movie.seats }}</td>
+
+                    <td>{{ movie.description|truncatewords:12 }}</td>
+
+                    <td class="text-center">
+                        <a href="{% url 'dashboard-movies-edit' movie.id %}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'dashboard-movies-delete' movie.id %}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- FILTER SCRIPT -->
+<script>
+    const searchInput = document.getElementById("movieSearch");
+    const genreFilter = document.getElementById("genreFilter");
+    const dateFilter = document.getElementById("dateFilter");
+    const tableRows = document.querySelectorAll("#moviesTable tbody tr");
+
+    function applyFilters() {
+        const searchText = searchInput.value.toLowerCase();
+        const selectedGenre = genreFilter.value.toLowerCase();
+        const selectedDate = dateFilter.value;
+
+        tableRows.forEach(row => {
+            const title = row.querySelector(".title").textContent.toLowerCase();
+            const genre = row.querySelector(".genre").textContent.toLowerCase();
+            const date = row.querySelector(".date").textContent;
+
+            let isVisible = true;
+
+            if (searchText && !title.includes(searchText)) isVisible = false;
+            if (selectedGenre && genre !== selectedGenre) isVisible = false;
+            if (selectedDate && date !== selectedDate) isVisible = false;
+
+            row.style.display = isVisible ? "" : "none";
+        });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    genreFilter.addEventListener("change", applyFilters);
+    dateFilter.addEventListener("change", applyFilters);
+</script>
+
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends 'systemadmin/layout/base.html' %}
+
+{% block title %}Dashboard | Theatre Management{% endblock %}
+
+{% block content %}
+
+<div class="py-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">🎭 All Theatres</h5>
+            <a href="{% url 'dashboard-theaters-create' %}" class="btn btn-sm btn-success">+ Add Theatre</a>
+        </div>
+
+        <div class="card-body table-responsive" style="height:100vh">
+            <table class="table table-hover align-middle table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Movies</th>
+                    <th>Seats</th>
+                    <th>Location</th>
+                    <th>Schedule</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for theatre in theaters %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ theatre.name }}</td>
+                    <td>{{ theatre.description|default:"-" }}</td>
+
+                    <!-- Movies -->
+                    <td>
+                        <div class="d-block">
+                            {% for m in theatre.movies.all %}
+                            <span class="badge bg-info text-dark">{{ m.title }}</span>
+                            {% empty %}
+                            <span class="badge bg-danger  text-muted">No movies</span>
+                            {% endfor %}
+                        </div>
+                    </td>
+
+                    <!-- Seats -->
+                    <td>
+                        <div class="position-relative">
+                            <a class="btn btn-primary"
+                               data-bs-toggle="collapse"
+                               href="#seatsCollapse{{ theatre.id }}"
+                               role="button"
+                               aria-expanded="false"
+                               aria-controls="seatsCollapse{{ theatre.id }}">
+                                View
+                            </a>
+
+                            <div class="collapse position-absolute mt-2 bg-white shadow rounded p-2"
+                                 id="seatsCollapse{{ theatre.id }}"
+                                 style="z-index: 100; min-width: 330px;">
+                                <div class="d-flex flex-wrap">
+                                    {% for s in theatre.seats.all %}
+                                    <span class="badge bg-secondary me-1 mb-1">{{ s.seat }}</span>
+                                    {% empty %}
+                                    <span class="badge bg-danger text-muted">No seats</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </td>
+
+
+                    <!-- Location -->
+                    <td>
+                        {% if theatre.location %}
+                        {{ theatre.location.country.name }}, {{ theatre.location.state.name }},
+                        {{ theatre.location.city.name }}
+                        {% else %}
+                        <span class="text-muted">No location</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Schedule -->
+                    <td>
+                        <div class="d-flex flex-column">
+                            {% if theatre.shows.exists %}
+                            <span class="badge bg-primary rounded-0">Scheduled</span>
+                            {% else %}
+                            <span class="badge bg-danger rounded-0">Not Scheduled</span>
+                            {% endif %}
+
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-0 "
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#showsModels{{ theatre.id }}">
+                                Manage
+                            </button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="showsModels{{ theatre.id }}" tabindex="-1"
+                             aria-labelledby="showsModelsLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="showsModelsLabel">Movie Schedule</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <form method="POST" action="{% url 'create_show' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="theatre_id" value="{{ theatre.id }}">
+
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>Movie</th>
+                                                    <th>Select Date</th>
+                                                    <th>Start and End Time</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for m in theatre.movies.all %}
+                                                {% comment %}
+                                                Find existing show for this movie in this theatre
+                                                {% endcomment %}
+                                                {% with show=theatre.shows.all|dictsort:"id"|first %}
+                                                <tr>
+                                                    <td>
+                                                        {{ m.title }}
+                                                        <input type="hidden" name="movie_ids[]" value="{{ m.id }}">
+                                                    </td>
+                                                    <td>
+                                                        {% for show in theatre.shows.all %}
+                                                        {% if show.movie_id == m.id %}
+                                                        <input type="date" name="dates[]" class="form-control"
+                                                               value="{{ show.date|date:'Y-m-d' }}"
+                                                               required>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        <div class="time-container d-flex align-items-center justify-content-center flex-column gap-1">
+                                                            {% for show in theatre.shows.all %}
+                                                            {% if show.movie_id == m.id %}
+                                                            <div class="time-contain d-flex align-items-center justify-content-center ">
+                                                                <div class="start_time_contain">
+                                                                    <input type="time" name="start_times[]"
+                                                                           class="form-control"
+                                                                           value="{{ show.time_slot.start_time|time:'H:i' }}"
+                                                                           required>
+                                                                </div>
+                                                                <div class="end_time_contain">
+                                                                    <input type="time" name="end_times[]"
+                                                                           class="form-control"
+                                                                           value="{{ show.time_slot.end_time|time:'H:i' }}"
+                                                                           required>
+                                                                </div>
+                                                                <div class="time_action">
+                                                                    <button type="submit"
+                                                                            class="btn btn-sm btn-danger rounded-0"><i
+                                                                            class="bi bi-x-lg"></i></button>
+                                                                </div>
+
+                                                            </div>
+                                                            {% endif %}
+                                                            {% endfor %}
+
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm  btn-info add-time-btn">
+                                                            Add Time
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                                {% endwith %}
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted">No movies available
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+
+                                            {% if theatre.shows.exists %}
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <button type="reset" class="btn btn-danger">Reset</button>
+
+                                            {% else %}
+                                            <button type="submit" class="btn btn-primary">Schedule Shows</button>
+                                            <button type="reset" class="btn btn-danger">Reset</button>
+
+                                            {% endif %}
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+                        <div class="d-flex g-1">
+                            <a href="{% url 'dashboard-theaters-edit' theatre.id %}" class="btn btn-sm btn-primary"> <i
+                                    class="bi bi-pencil"></i></a>
+                            <a href="{% url 'dashboard-theaters-delete' theatre.id %}"
+                               class="btn btn-sm btn-danger"> <i class="bi bi-trash"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No theatres found.</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

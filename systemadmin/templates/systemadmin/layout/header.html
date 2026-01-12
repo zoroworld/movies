@@ -1,0 +1,48 @@
+
+<header class="dashboard-header d-flex align-items-center justify-content-between px-4 py-2 shadow-sm rounded-bottom-3">
+    <button id="toggleSidebarBtn" class="btn btn-sm btn-outline-primary"><i class="bi bi-card-list"></i></button>
+    <!-- Left: Menu + Page Title -->
+    <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-light border d-xl-none" id="sidebarToggle">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+        <h4 class="fw-bold mb-0 text-dark">Dashboard</h4>
+    </div>
+
+    <!-- Center: Search Bar -->
+    <form class="search-wrapper d-none d-md-flex align-items-center w-50 mx-3">
+        <i class="bi bi-search text-muted ms-3"></i>
+        <input
+                class="form-control border-0 shadow-none px-4 py-2"
+                type="search"
+                placeholder="Search anything..."
+                aria-label="Search"
+        >
+    </form>
+
+    <!-- Right: User Menu -->
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle"
+           id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <img src="{{ MEDIA_URL }}default/admin.jpg"
+                 alt="{{ user.username }}"
+                 width="40" height="40"
+                 class="rounded-circle border shadow-sm">
+
+            <span class="fw-semibold text-dark d-none d-sm-inline">{{ user.username|capfirst }}</span>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2">
+            <li><h6 class="dropdown-header">{{ user.username|capfirst }}</h6></li>
+            <li><a class="dropdown-item" href="{% url 'dashboard-user-profile-view' user.id%}"><i class="bi bi-person me-2"></i>Profile</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger fw-semibold" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </a></li>
+        </ul>
+    </div>
+</header>

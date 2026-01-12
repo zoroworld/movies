@@ -1,0 +1,83 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Booking | Movies List{% endblock %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_admin %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center">
+        <h2 class="text-white">Theatre Movies</h2>
+        <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Theatre Movies</span>
+        </div>
+    </div>
+</div>
+
+<!-- Theatre Title -->
+<section class="book-movie-container container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">{{ theatre.name|upper }}</h1>
+        <div class="mx-auto" style="width: 100px; height: 4px; background: #007bff;"></div>
+    </div>
+
+    <!-- Movies Grid -->
+    <div class="row g-4">
+
+        {% for movie in movies %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <!-- Movie Card -->
+            <div class="card h-100 shadow-sm border-0 movie-card rounded-3 hover-shadow">
+
+                <div class="movie-img-container">
+                    <img src="{% if movie.poster %}{{ movie.poster.url }}{% else %}--{% endif %}"
+                         class="card-img-top rounded-top movie-img"
+                         alt="{{ movie.title }}">
+                </div>
+
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title text-dark fw-bold">{{ movie.title }}</h5>
+
+                    <p class="text-muted small mb-1">
+                        <i class="fa fa-calendar"></i>
+                        {{ movie.release_date|date:"M d, Y" }}
+                    </p>
+
+                    <p class="card-text text-secondary">
+                        {{ movie.description|truncatewords:20 }}
+                    </p>
+
+                    <div class="mt-auto pt-3">
+                        <a href="{% url 'theatres-movies-seats-booking' movie.id theatre.id %}"
+                           class="btn btn-primary w-100 py-2 fw-semibold">
+                            🎟️ Book Ticket
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+
+{% else %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="alert alert-warning text-center shadow-sm">
+        <p class="mb-0 fs-5">
+            ⚠️ Please
+            <a href="{% url 'login' %}" class="alert-link fw-bold">login</a>
+            to continue.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

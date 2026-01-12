@@ -1,0 +1,139 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Login | Movies Login{% endblock %}
+
+{% load static %}
+{% block content %}
+<!-- Breadcrumb Begin -->
+<section class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+</section>
+<!-- Breadcrumb End -->
+<section class="login-signup-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="login-signup-contain signup-container">
+                    <div class="card shadow-sm login-card ">
+                        <div class="card-body p-4">
+                            <h2 class="text-center mb-4">Sign up</h2>
+                            <form method="POST" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <input type="file" class="form-control form-control-lg" name="profile_pic"
+                                           id="profile_pic">
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-xl-6">
+                                        <input
+                                                type="text"
+                                                name="firstname"
+                                                id="firstName"
+                                                class="form-control form-control-lg"
+                                                placeholder="Enter your first name"
+                                                required
+                                        >
+                                    </div>
+                                    <div class="mb-3 col-xl-6">
+                                        <input
+                                                type="text"
+                                                name="lastname"
+                                                id="lastName"
+                                                class="form-control form-control-lg"
+                                                placeholder="Enter your last name"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-xl-6">
+                                        <input
+                                                type="text"
+                                                name="username"
+                                                id="username"
+                                                class="form-control form-control-lg"
+                                                placeholder="Enter your username"
+                                                required
+                                        >
+                                    </div>
+                                    {% if error %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{username_error}}
+                                    </div>
+                                    {% endif %}
+                                    <div class="mb-3 col-xl-6">
+                                        <input
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                class="form-control form-control-lg"
+                                                placeholder="Enter your email"
+                                                required
+                                        >
+                                    </div>
+                                </div>
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{email_error}}
+                                </div>
+                                {% endif %}
+                                <div class="mb-3">
+                                    <input
+                                            type="tel"
+                                            name="contact"
+                                            id="contact"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter your contact number"
+                                            required
+                                            pattern="[0-9]{10}"
+                                            title="Enter a valid 10-digit phone number"
+                                    >
+                                </div>
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{contact_error}}
+                                </div>
+                                {% endif %}
+                                <div class="mb-3">
+                                    <input
+                                            type="password"
+                                            name="password"
+                                            id="password"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter your password"
+                                            required
+                                    >
+                                </div>
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{password_error}}
+                                </div>
+                                {% endif %}
+                                <div class="mb-3">
+                                    <input
+                                            type="password"
+                                            name="confirmpassword"
+                                            id="confirmpassword"
+                                            class="form-control form-control-lg"
+                                            placeholder="Enter your confirm password"
+                                            required
+                                    >
+                                </div>
+
+                                <div class="d-flex ">
+                                    <button type="submit" class="btn btn-primary py-3 btn-block w-100">
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+
+                            <p class="text-center mt-3 mb-0">
+                                login again ?
+                                <a href="/login" class="text-decoration-none">login</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Home | Movies Booking{% endblock %}
+{% block meta_title %}Home - Movies Booking{% endblock %}
+{% block meta_description %}Discover and book tickets for trending movies easily.{% endblock %}
+{% block meta_keywords %}home, movies, booking, tickets, cinema{% endblock %}
+{% load static %}
+{% block content %}
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+        <div class="hero__item set-bg" data-setbg="{% static 'img/hero/hero-1.png' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="hero__text">
+                            <span>Now Showing</span>
+                            <h2>Experience the Best Movies</h2>
+                            <a href="#movies-list" class="primary-btn">Browse Movies</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__item set-bg" data-setbg="{% static 'img/hero/hero-1.png' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="hero__text">
+                            <span>Now Showing</span>
+                            <h2>Experience the Best Movies</h2>
+                            <a href="#movies-list" class="primary-btn">Browse Movies</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__item set-bg" data-setbg="{% static 'img/hero/hero-1.png' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="hero__text">
+                            <span>Now Showing</span>
+                            <h2>Experience the Best Movies</h2>
+                            <a href="#movies-list" class="primary-btn">Browse Movies</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+
+<!-- Movies Section -->
+<section id="movies-list" class="movies section-padding">
+    <div class="container">
+        <h2 class="text-center mb-5 text-white">🎬 Available Movies</h2>
+        <div class="row">
+            {% for movie in movies %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="img-contain">
+                        {% if movie.poster %}
+                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}"
+                             class="img-thumbnail rounded shadow-sm">
+                        {% else %}
+                        <img src="/media/posters/default.jpg" alt="Default Poster"
+                             class="img-thumbnail rounded shadow-sm">
+                        {% endif %}
+                    </div>
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <h4 class="card-title">{{ movie.title }}</h4>
+                        <p class="text-muted">{{ movie.genre }}</p>
+                        <a href="{% url 'movie_detail' movie.id %}" class="btn btn-primary btn-sm btn__item">View
+                            Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!--Categories section start-->
+<section class="categories bg-light py-5">
+    <h2 class="text-center mb-4">🎭 Browse by Genre</h2>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <div class="container">
+            <div class="movie__carousel owl-carousel">
+                {% for genre, genre_poster in genres %}
+                <div class="item">
+                    <a class="card h-100 text-decoration-none bg-outline-secondary"
+                       href="{% url 'movies_by_genre' genre|lower %}">
+                        <img class="card-img-top" src="{{ genre_poster.url }}" alt="{{ genre }} poster">
+                        <div class="card-body text-center">
+                            {{ genre }}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!----- Categories section end -->
+<!-- Customer Reviews Section Begin -->
+<section class="latest review spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title center-title">
+                    <span>What Our Customers Say</span>
+                    <h2>⭐ Movie Reviews & Feedback</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="latest__slider owl-carousel">
+                <!-- Review 1 -->
+                <div class="col-lg-12 review-content">
+                    <div class="review__item latest__item shadow-sm p-4 rounded">
+                        <h4>“Amazing Movie Experience!”</h4>
+                        <ul class="list-inline text-warning">
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star-half-o"></i></li>
+                        </ul>
+                        <p class="content">“The booking process was super easy and the seats were perfect. I loved the
+                            new movie
+                            experience — 10/10 would recommend!”</p>
+                        <p class="author text-muted mb-0"><strong>- Rahul Mehta</strong>, Mumbai</p>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="col-lg-12 review-content">
+                    <div class="review__item latest__item shadow-sm p-4  rounded">
+                        <h4>“Quick and Smooth Booking”</h4>
+                        <ul class="list-inline text-warning">
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        </ul>
+                        <p class="content">“The website is easy to use, and payment was smooth. I got instant
+                            confirmation of my movie
+                            ticket!”</p>
+                        <p class=" author text-muted mb-0"><strong>- Sneha Kapoor</strong>, Delhi</p>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="col-lg-12 review-content">
+                    <div class="review__item latest__item shadow-sm p-4 rounded">
+                        <h4>“Love the Design & Speed”</h4>
+                        <ul class="list-inline text-warning">
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                        </ul>
+                        <p class="content">“Great website layout and fast performance. Booking multiple tickets was
+                            effortless. Keep it
+                            up!”</p>
+                        <p class="author text-muted mb-0"><strong>- Arjun Nair</strong>, Bengaluru</p>
+                    </div>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="col-lg-12 review-content">
+                    <div class="review__item latest__item shadow-sm p-4 rounded">
+                        <h4>“Perfect for Family Outings”</h4>
+                        <ul class="list-inline text-warning">
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star-half-o"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                        </ul>
+                        <p class="content">“I booked seats for my whole family and had no issues. Very convenient
+                            platform for movie
+                            lovers.”</p>
+                        <p class="author text-muted mb-0"><strong>- Priya Sharma</strong>, Chennai</p>
+                    </div>
+                </div>
+
+                <!-- Review 5 -->
+                <div class="col-lg-12 review-content">
+                    <div class="review__item latest__item shadow-sm p-4 rounded">
+                        <h4>“Highly Recommended!”</h4>
+                        <ul class="list-inline text-warning">
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        </ul>
+                        <p class="content">“One of the best booking platforms I’ve used. Fast, simple, and
+                            user-friendly.”</p>
+                        <p class="author text-muted mb-0"><strong>- Neha Patel</strong>, Pune</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Customer Reviews Section End -->
+
+<!-- Movie Call To Action Section Begin -->
+<section class="callto spad callto-container">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <div class="callto__text">
+                    <h2>🎥 Experience Movies Like Never Before!</h2>
+                    <p>Book your favorite seats instantly and enjoy the latest blockbusters on the big screen.</p>
+                    <a href="/movies" class="btn btn-primary mt-3" style="padding: 10px 25px; border-radius: 5px;">
+                        🎟️ Book Your Movie Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Movie Call To Action Section End -->
+
+{% endblock %}

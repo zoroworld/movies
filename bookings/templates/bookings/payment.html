@@ -1,0 +1,123 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Booking | Booking details{% endblock %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_admin %}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Payment</h2>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <span>payment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<section class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+            <!-- Card -->
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+
+                    <div class="row">
+
+                        <!-- LEFT SIDE -->
+                        <div class="col-lg-6">
+
+                            <h3 class="fw-bold mb-4 text-primary">Booking Summary</h3>
+
+                            <ul class="list-group list-group-flush mb-4">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>🎬 Movie</strong>
+                                    <span>{{ booking.movies.title }}</span>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>🏛 Theatre</strong>
+                                    <span>{{ booking.theater }}</span>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>👤 User</strong>
+                                    <span>{{ booking.user.username }}</span>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>💺 Seats</strong>
+                                    <span>{{ seats_booked }}</span>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <strong>💰 Total Price</strong>
+                                    <span class="fw-bold text-success">₹{{ booking.total_price }}</span>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+                        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+
+                            <div class="text-center">
+                                <h4 class="fw-bold mb-3">Complete Your Payment</h4>
+                                <p class="text-muted mb-4">Secure Razorpay checkout</p>
+
+                                <form action="{% url 'payment-success' %}" method="POST">
+                                    {% csrf_token %}
+
+                                    <script
+                                            src="https://checkout.razorpay.com/v1/checkout.js"
+                                            data-key="{{ razorpay_key_id }}"
+                                            data-amount="{{ amount }}"
+                                            data-currency="{{ currency }}"
+                                            data-order_id="{{ order_id }}"
+                                            data-buttontext="Pay Now"
+                                            data-name="Movie Booking"
+                                            data-description="Booking Payment"
+                                            data-prefill.name="{{ user_name }}"
+                                            data-prefill.email="{{ user_email }}"
+                                            data-prefill.contact="{{ user_contact }}"
+                                            data-theme.color="#0d6efd">
+                                    </script>
+
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+{% else %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="alert alert-warning text-center shadow-sm" role="alert">
+        <p class="mb-0 fs-5">
+            ⚠️ Please <a href="{% url 'login' %}" class="alert-link fw-bold">login</a> to continue.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

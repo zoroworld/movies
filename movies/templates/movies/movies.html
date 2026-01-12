@@ -1,0 +1,160 @@
+{% extends 'pages/layout/base.html' %}
+{% load static %}
+{% block title %}Movies | Booking{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_admin %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center">
+        <h2 class="text-white">
+            {% if theatre %} {{ theatre.name }} Movies {% else %} Movies List {% endif %}
+        </h2>
+        <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Movies</span>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="container my-4">
+
+    <form method="get" class="card p-3 shadow-sm">
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <input type="text" name="search" value="{{ search }}"
+                       class="form-control" placeholder="Search movie...">
+            </div>
+
+            <div class="col-md-3">
+                <select name="language" class="form-select">
+                    <option value="">Language</option>
+                    <!-- prettier-ignore -->
+                    <option value="Hindi" {% if language == 'Hindi' %}selected{% endif %}>Hindi</option>
+                    <option value="English" {% if language == 'English' %}selected{% endif %}>English</option>
+                    <option value="Tamil" {% if language == 'Tamil' %}selected{% endif %}>Tamil</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <select name="genre" class="form-select">
+                    <option value="">Genre</option>
+                    <option value="Action" {% if genre == "Action" %}selected{% endif %}>Action</option>
+                    <option value="Comedy" {% if genre == "Comedy" %}selected{% endif %}>Comedy</option>
+                    <option value="Drama" {% if genre == "Drama" %}selected{% endif %}>Drama</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <input type="number" name="year" value="{{ year }}"
+                       class="form-control" placeholder="Year">
+            </div>
+
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100">Go</button>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+<!-- Movies Grid -->
+<section class="container py-4">
+    <div class="row g-4">
+
+        {% for movie in movies %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+
+            <div class="card h-100 shadow-sm movie-card border-0 rounded-3">
+
+                <img src="{{ movie.poster.url }}"
+                     class="card-img-top movie-img" alt="{{ movie.title }}">
+
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="fw-bold">{{ movie.title }}</h5>
+
+                    <p class="text-muted small mb-2">
+                        <i class="fa fa-calendar"></i>
+                        {{ movie.release_date|date:"M d, Y" }}
+                    </p>
+
+                    <p class="text-secondary small">
+                        {{ movie.description|truncatewords:20 }}
+                    </p>
+
+                    <div class="mt-auto">
+                        {% if theatre %}
+                        <a href="{% url 'theatres-movies-seats-booking' movie.id theatre.id %}"
+                           class="btn btn-primary w-100">🎟️ Book Ticket</a>
+                        {% else %}
+                        <a href="{% url 'movie_detail' movie.id %}"
+                           class="btn btn-outline-primary w-100">View Details</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h4>No movies found</h4>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+<!-- Pagination -->
+{% if movies.has_other_pages %}
+<div class="container d-flex justify-content-center mt-4 mb-4">
+    <nav>
+        <ul class="pagination">
+
+            {% if movies.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ movies.previous_page_number }}&search={{ search }}&language={{ language }}&genre={{ genre }}&year={{ year }}">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in movies.paginator.page_range %}
+            <li class="page-item {% if movies.number == num %}active{% endif %}">
+                <a class="page-link"
+                   href="?page={{ num }}&search={{ search }}&language={{ language }}&genre={{ genre }}&year={{ year }}">
+                    {{ num }}
+                </a>
+            </li>
+            {% endfor %}
+
+            {% if movies.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ movies.next_page_number }}&search={{ search }}&language={{ language }}&genre={{ genre }}&year={{ year }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+
+
+{% else %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="alert alert-warning text-center shadow-sm">
+        <p class="fs-5">⚠️ Please <a href="{% url 'login' %}" class="alert-link fw-bold">login</a> to continue.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

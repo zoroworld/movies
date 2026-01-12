@@ -1,0 +1,61 @@
+{% extends 'pages/layout/base.html' %}
+{% block title %}Booking | Select Theatre{% endblock %}
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_admin %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container text-center">
+        <h2>Select Theatre</h2>
+        <div class="breadcrumb__links">
+            <a href="/">Home</a>
+            <span>Select the Theatre</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Section -->
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4 fw-bold">🎬 Choose Your Theatre</h3>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <label class="form-label fw-semibold">Select Theatre</label>
+
+                        <select name="theatre_id" id="theatre-select" class="form-select form-select-lg mb-4">
+                            {% for theatre in theatres %}
+                            <option value="{{ theatre.id }}">{{ theatre.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5">
+                            Continue to Seat Booking →
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% else %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="alert alert-warning text-center shadow-sm">
+        <p class="mb-0 fs-5">
+            ⚠️ Please <a href="{% url 'login' %}" class="alert-link fw-bold">login</a> to continue.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

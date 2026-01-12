@@ -1,0 +1,81 @@
+<!-- Header Section Begin -->
+{% load static %}
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="header__logo">
+                    <a href="/"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="header__nav__option">
+                    <nav class="header__nav__menu mobile-menu">
+                        <ul>
+                            <li class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"><a href="/">Home</a>
+                            </li>
+                            <li class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}"><a
+                                    href="{% url 'about' %}">About</a></li>
+                            {% if user.is_authenticated and not user.is_admin %}
+                            <li class="{% if request.resolver_match.url_name == 'movies' %}active{% endif %}"><a
+                                    href="{% url 'movies' %}">Movies</a></li>
+
+                            {% endif %}
+                            <!--                            <li><a href="#">Pages</a>-->
+                            <!--                                <ul class="dropdown">-->
+                            <!--                                    <li><a href="./about.html">About</a></li>-->
+                            <!--                                    <li><a href="./portfolio.html">Portfolio</a></li>-->
+                            <!--                                    <li><a href="./blog.html">Blog</a></li>-->
+                            <!--                                    <li><a href="./blog-details.html">Blog Details</a></li>-->
+                            <!--                                </ul>-->
+                            <!--                            </li>-->
+                            <li class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"><a
+                                    href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                        {% if user.is_authenticated and not user.is_admin %}
+                        <div class="mx-4 nav-btn">
+                            <a class="btn btn-warning" href="{% url 'booking-view' %}">BOOK</a>
+                        </div>
+                        {% endif %}
+                        <div class="nav-login mx-4">
+                            {% if user.is_authenticated and not user.is_admin %}
+                            <div class="dropdown nav-user-setting text-end">
+                                <a href="#" class="d-block link-light text-decoration-none dropdown-toggle"
+                                   id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="{% if user.profile_pic %}{{ user.profile_pic.url }} {% endif %}" alt="mdo"
+                                         width="32" height="32"
+                                         class="rounded-circle">
+                                </a>
+                                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+                                    <li><a class="dropdown-item" href="#">{{user.username}}</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                                </ul>
+                            </div>
+                            {% else %}
+                            <a href="/login" class="btn btn-secondary btn-sm">Login</a>
+                            <a href="/signup" class="btn btn-secondary btn-sm">Signup</a>
+
+                            {% endif %}
+                        </div>
+                    </nav>
+                    {% if not user.is_authenticated and not user.is_admin %}
+                    <div class="header__nav__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-youtube-play"></i></a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+    </div>
+</header>
+<!-- Header End -->

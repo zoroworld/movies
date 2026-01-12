@@ -1,0 +1,137 @@
+<section class=" d-flex flex-column p-3 text-bg-dark">
+<!-- Brand -->
+<a href="{% url 'dashboard-view' %}"
+   class="d-flex align-items-center mb-3 text-white text-decoration-none">
+    <span class="fs-4">🎬 Admin Panel</span>
+</a>
+
+<hr>
+
+<!-- Navigation -->
+<ul class="nav nav-pills flex-column mb-auto">
+
+    <!-- Dashboard -->
+    <li>
+        <a href="{% url 'dashboard-view' %}"
+           class="nav-link text-white {% if request.resolver_match.url_name == 'dashboard-view' %}active{% endif %}">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+    </li>
+
+    <!-- Movies -->
+    {% with '#movies-collapse dashboard-movies-view dashboard-movies-create dashboard-movies-edit' as movie_urls %}
+    <li>
+        <a href="#movies-collapse"
+           class="nav-link text-white d-flex justify-content-between
+                      {% if request.resolver_match.url_name in movie_urls %}active{% endif %}"
+           data-bs-toggle="collapse">
+            <span><i class="bi bi-film me-2"></i> Movies</span>
+            <i class="bi bi-chevron-down"></i>
+        </a>
+
+        <div class="collapse {% if request.resolver_match.url_name in movie_urls %}show{% endif %}"
+             id="movies-collapse">
+            <ul class="btn-toggle-nav list-unstyled fw-normal small ps-3">
+                <li>
+                    <a href="{% url 'dashboard-movies-view' %}"
+                       class="nav-link mt-2 {% if request.resolver_match.url_name == 'dashboard-movies-view' %}active{% endif %}">
+                        View Movies
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'dashboard-movies-create' %}"
+                       class="nav-link mt-2 {% if request.resolver_match.url_name == 'dashboard-movies-create' %}active{% endif %}">
+                        Create Movie
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    {% endwith %}
+
+    <!-- Theaters -->
+    {% with '#theaters-collapse dashboard-theaters-view dashboard-theaters-create dashboard-theaters-edit' as  theater_urls %}
+    <li>
+        <a href="#theaters-collapse"
+           class="nav-link text-white d-flex justify-content-between
+                      {% if request.resolver_match.url_name in theater_urls %}active{% endif %}"
+           data-bs-toggle="collapse">
+            <span><i class="bi bi-building me-2"></i> Theaters</span>
+            <i class="bi bi-chevron-down"></i>
+        </a>
+
+        <div class="collapse {% if request.resolver_match.url_name in theater_urls %}show{% endif %}"
+             id="theaters-collapse">
+            <ul class="btn-toggle-nav list-unstyled small ps-3">
+                <li>
+                    <a href="{% url 'dashboard-theaters-view' %}"
+                       class="nav-link mt-2 {% if request.resolver_match.url_name == 'dashboard-theaters-view' %}active{% endif %}">
+                        View Theaters
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'dashboard-theaters-create' %}"
+                       class="nav-link mt-2 {% if request.resolver_match.url_name == 'dashboard-theaters-create' %}active{% endif %}">
+                        Create Theater
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    {% endwith %}
+
+    <!-- Users -->
+    {% with 'dashboard-user-view' as user_urls %}
+    <li>
+        <a href="#users-collapse"
+           class="nav-link text-white d-flex justify-content-between
+                      {% if request.resolver_match.url_name in user_urls %}active{% endif %}"
+           data-bs-toggle="collapse">
+            <span><i class="bi bi-people me-2"></i> Users</span>
+            <i class="bi bi-chevron-down"></i>
+        </a>
+
+        <div class="collapse {% if request.resolver_match.url_name in user_urls %}show{% endif %}"
+             id="users-collapse">
+            <ul class="btn-toggle-nav list-unstyled ps-3 small">
+                <li>
+                    <a href="{% url 'dashboard-user-view' %}"
+                       class="nav-link mt-2 {% if request.resolver_match.url_name == 'dashboard-user-view' %}active{% endif %}">
+                        View Users
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    {% endwith %}
+
+    <!-- Bookings -->
+    <li>
+        <a href="{% url 'dashboard-booking-history' %}"
+           class="nav-link text-white {% if request.resolver_match.url_name == 'dashboard-booking-history' %}active{% endif %}">
+            <i class="bi bi-ticket-perforated me-2"></i> Booking History
+        </a>
+    </li>
+
+</ul>
+
+<hr>
+
+<!-- User Dropdown -->
+<div class="dropdown mt-auto">
+    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+       data-bs-toggle="dropdown">
+        <strong>{{ user.username|capfirst }}</strong>
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-dark shadow">
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+    </ul>
+</div>
+</section>
+

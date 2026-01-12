@@ -1,0 +1,122 @@
+{% extends 'pages/layout/base.html' %}
+{% block title %}View Movie | Movie Details{% endblock %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+{% if user.is_authenticated and not user.is_admin %}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Movie Details</h2>
+                    <div class="breadcrumb__links">
+                        <a href="/">Home</a>
+                        <span>Movie Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Movie Details -->
+<section class="container py-5">
+    <div class="row g-4">
+
+        <!-- Poster -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <img src="{% if movie.poster %}{{ movie.poster.url }}{% else %}{% static 'img/default-poster.jpg' %}{% endif %}"
+                     class="card-img-top"
+                     alt="{{ movie.title }}">
+            </div>
+        </div>
+
+        <!-- Details + Seat Booking -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+
+                    <!-- Movie Info -->
+                    <h2 class="fw-bold">{{ movie.title }}</h2>
+                    <h5 class="text-primary">{{ movie.genre }}</h5>
+                    <p class="text-muted">{{ movie.description }}</p>
+
+                    <hr>
+
+                    <!-- Seat Booking -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <h4 class="fw-bold mb-3">Book Seats</h4>
+
+                        <div class="row gy-2">
+                            {% for item in theatre_seats %}
+                            <div class="col-3 col-md-2">
+                                {% if item.is_available %}
+                                <button type="button"
+                                        class="btn btn-outline-primary w-100 seat-btn"
+                                        data-seat="{{ item.seat.id }}">
+                                    {{ item.seat.seat }}
+                                </button>
+                                {% else %}
+                                <button type="button" disabled
+                                        class="btn btn-danger w-100 disabled">
+                                    {{ item.seat.seat }}
+                                </button>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mt-3 mb-3">Book show time</h4>
+                            <div class="row gy-2">
+                                {% for item in show_time%}
+                                <div class="col-3 col-md-2">
+                                    <button type="button"
+                                            class="btn btn-outline-primary w-100 seat-btn"
+                                            data-seat="{{ item }}">
+                                        {{ item }}
+                                    </button>
+
+
+
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                        <input type="hidden" name="theatre_id" value="{{ theatre.id }}">
+                        <div id="seatsBookedListContainer"></div>
+
+                        <button type="submit" class="btn btn-success w-100 mt-4 py-2 fs-5">
+                            Confirm Booking
+                        </button>
+                    </form>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <a href="{% url 'movies' %}" class="btn btn-secondary">← Back to Movies</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% else %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="alert alert-warning text-center shadow-sm">
+        <p class="mb-0 fs-5">
+            ⚠️ Please <a href="{% url 'login' %}" class="alert-link fw-bold">login</a> to continue.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'pages/layout/base.html' %}
+
+{% block title %}Booking | Booking details{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option spad set-bg" data-setbg="{% static 'img/breadcrumb-bg.jpg' %}">
+    <div class="container">
+
+    </div>
+</div>
+
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+
+                    <!-- Success Icon -->
+                    <div class="text-center mb-4">
+                        {% if status %}
+                        <div class="text-success fs-1">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <h2 class="fw-bold text-success">{{ message }}</h2>
+                        {% else %}
+                        <div class="text-danger fs-1">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </div>
+                        <h2 class="fw-bold text-danger">{{ message }}</h2>
+                        {% endif %}
+                    </div>
+
+                    <!-- Information -->
+                    <div class="mb-4">
+                        <h4 class="fw-bold mb-3">Booking Details</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>Booking ID:</strong> {{ booking.id }}</li>
+                            <li class="list-group-item"><strong>Movie Name:</strong> {{ movie }}</li>
+                            <li class="list-group-item"><strong>Theatre:</strong> {{ theatre }}</li>
+                            <li class="list-group-item"><strong>Address:</strong> {{ theatre_address }}</li>
+                            <li class="list-group-item"><strong>Show Date:</strong> {{ show_date }}</li>
+                            <li class="list-group-item"><strong>Start Time:</strong> {{ show_start_time }}</li>
+                            <li class="list-group-item"><strong>End Time:</strong> {{ show_end_time }}</li>
+                            <li class="list-group-item"><strong>Seats:</strong> {{ seats }}</li>
+                            <li class="list-group-item"><strong>Total Price:</strong> ₹{{ total_price }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="fw-bold mb-3">User Details</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item"><strong>User:</strong> {{ user }}</li>
+                            <li class="list-group-item"><strong>Contact:</strong> {{ contact }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="/" class="btn btn-primary px-4 py-2">Go to Home</a>
+                        <a href="/booking" class="btn btn-outline-secondary px-4 py-2">My Bookings</a>
+                        <a href="{% url 'genrate_booking_pdf' booking.id %}" target="_blank" class="btn btn-danger">
+                            Download Ticket
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
