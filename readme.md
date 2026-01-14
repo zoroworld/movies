@@ -137,3 +137,10 @@ http://127.0.0.1:8000/
 * Customers can see **real-time seat availability**
 * Designed to reduce queues and streamline ticket booking
 
+##  Login Credentials (Demo)
+
+| Username | Password  | Role     |
+|----------|-----------|----------|
+| admin    | admin123# | ADMIN    |
+| user     | user123#  | CUSTOMER |
+
